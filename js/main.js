@@ -49,9 +49,9 @@ function mostrarTareas() {
             <p class="card-text">${tarea}</p>
             <div class="d-flex justify-content-between align-items-center">
               <div class="btn-group">
-                <button type="button" class="btn btn-sm btn-danger" onclick="borrarTarea(${indiceTarea})">Borrar</button>
-                <button type="button" class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#modalEditarTarea" 
-                onclick="editarTarea(${indiceTarea})">Editar</button>
+                <button type="button" class="btn btn-danger" onclick="borrarTarea(${indiceTarea})"><i class="bi bi-trash"></i></button>
+                <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#modalEditarTarea" 
+                onclick="editarTarea(${indiceTarea})"><i class="bi bi-pencil-square"></i></button>
               </div>
             </div>
           </div>
