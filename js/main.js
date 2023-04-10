@@ -22,9 +22,17 @@ function agregarTarea() {
   if (tarea !== "" && !listaDeTareas.includes(tarea)) {
     listaDeTareas.push(tarea);
   } else if (listaDeTareas.includes(tarea)) {
-    alert("La tarea que intentas agregar ya existe.");
+    Swal.fire({
+      icon: "error",
+      title: "Oops...Lo siento",
+      text: "La tarea que deseas agregar ya existe.",
+    });
   } else {
-    alert("La tarea no puede estar vacía.");
+    Swal.fire({
+      icon: "error",
+      title: "Oops...Lo siento",
+      text: "La tarea no puede estar vacía.",
+    });
   }
   mostrarTareas();
   form.reset();
@@ -59,7 +67,7 @@ function borrarTarea(indiceTarea) {
 }
 
 function editarTarea(indiceTarea) {
-  inputEditarTarea.value = listaDeTareas[indiceTarea]
+  inputEditarTarea.value = listaDeTareas[indiceTarea];
   let btnGuardarTarea = document.getElementById("btnGuardarTarea");
   btnGuardarTarea.addEventListener("click", () => {
     let tareaEditada = inputEditarTarea.value;
@@ -68,9 +76,17 @@ function editarTarea(indiceTarea) {
       listaDeTareas[indiceTarea] = tareaEditada;
       mostrarTareas();
     } else if (listaDeTareas.includes(tareaEditada)) {
-      alert("La tarea que intentas ingresar ya existe.")
+      Swal.fire({
+        icon: "error",
+        title: "Oops...Lo siento",
+        text: "La tarea que deseas agregar ya existe.",
+      });
     } else {
-      alert("La tarea no puede estar vacía.")
+      Swal.fire({
+        icon: "error",
+        title: "Oops...Lo siento",
+        text: "La tarea no puede estar vacía.",
+      });
     }
   });
 }
