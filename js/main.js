@@ -19,14 +19,22 @@ function agregarTarea() {
   } else if (listaDeTareas.includes(tarea)) {
     Swal.fire({
       icon: "error",
+      iconColor: "#6e786c",
       title: "Oops...Lo siento",
       text: "La tarea que deseas agregar ya existe.",
+      background: "#cbf1c4",
+      color: "#6e786c",
+      confirmButtonColor: "#6e786c",
     });
   } else {
     Swal.fire({
       icon: "error",
+      iconColor: "#6e786c",
       title: "Oops...Lo siento",
       text: "La tarea no puede estar vacía.",
+      background: "#cbf1c4",
+      color: "#6e786c",
+      confirmButtonColor: "#6e786c",
     });
   }
   mostrarTareas();
@@ -77,6 +85,12 @@ function editarTarea(indiceTarea) {
   inputEditarTarea.setSelectionRange(end,end)
   inputEditarTarea.focus();
   btnEditarTarea.innerHTML = "Guardar tarea";
+  inputEditarTarea.addEventListener("keypress", (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      btnEditarTarea.click()
+    }
+  })
   btnEditarTarea.addEventListener("click", () => {
     let tareaEditada = inputEditarTarea.value;
     if (tareaEditada !== "") {
@@ -86,11 +100,15 @@ function editarTarea(indiceTarea) {
       inputEditarTarea.blur();
       mostrarTareas();
     } else {
-      Swal.fire({
-        icon: "error",
-        title: "Oops...Lo siento",
-        text: "La tarea no puede estar vacía.",
-      });
+    Swal.fire({
+      icon: "error",
+      iconColor: "#6e786c",
+      title: "Oops...Lo siento",
+      text: "La tarea no puede estar vacía.",
+      background: "#cbf1c4",
+      color: "#6e786c",
+      confirmButtonColor: "#6e786c",
+    });
     }
   });
 }
