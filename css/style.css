@@ -2,4 +2,11 @@
 
 body {
   font-family: "Poppins", sans-serif;
+  background-color: #cbf1c4;
+}
+
+.card, .btn, .btn:hover, .form-control, .form-control:focus {
+  background-color: #e4f9e0;
+  color: #6e786c;
+  border: #cbf1c4;
 }

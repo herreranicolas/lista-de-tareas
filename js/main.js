@@ -49,8 +49,8 @@ function mostrarTareas() {
             <input readonly class="form-control-plaintext" type="text" value="${tarea}" id="inputEditarTarea${indiceTarea}" autocomplete="off"></input>
             <div class="d-flex justify-content-between align-items-center">
               <div class="btn-group">
-                <button type="button" class="btn btn-danger" onclick="borrarTarea(${indiceTarea})"><i class="bi bi-trash"></i></button>
-                <button type="button" class="btn btn-warning" id="btnEditarTarea${indiceTarea}"
+                <button type="button" class="btn" onclick="borrarTarea(${indiceTarea})"><i class="bi bi-trash"></i></button>
+                <button type="button" class="btn" id="btnEditarTarea${indiceTarea}"
                 onclick="editarTarea(${indiceTarea})"><i class="bi bi-pencil-square"></i></button>
               </div>
             </div>
