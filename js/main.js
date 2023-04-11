@@ -2,15 +2,10 @@ let form = document.getElementById("formTarea");
 let inputTarea = document.getElementById("inputTarea");
 let btnAgregarTarea = document.getElementById("btnAgregarTarea");
 let contenedorTareas = document.getElementById("contenedorTareas");
-let formEditarTarea = document.getElementById("formEditarTarea");
 let inputEditarTarea = document.getElementById("inputEditarTarea");
 let listaDeTareas = [];
 
 form.addEventListener("submit", (e) => {
-  e.preventDefault();
-});
-
-formEditarTarea.addEventListener("submit", (e) => {
   e.preventDefault();
 });
 
@@ -39,18 +34,23 @@ function agregarTarea() {
 }
 
 function mostrarTareas() {
-  contenedorTareas.innerHTML = "";
-  listaDeTareas.map(
-    (tarea, indiceTarea) =>
-      (contenedorTareas.innerHTML += `
+  if (listaDeTareas.length === 0) {
+    contenedorTareas.innerHTML = `<p class="lead text-center m-1">No tienes tareas pendientes</p>`;
+    contenedorTareas.classList.add("justify-content-center");
+  } else {
+    contenedorTareas.innerHTML = "";
+    contenedorTareas.classList.remove("justify-content-center");
+    listaDeTareas.forEach(
+      (tarea, indiceTarea) =>
+        (contenedorTareas.innerHTML += `
       <article class="col">
         <div class="card shadow-sm">
           <div class="card-body">
-            <p class="card-text">${tarea}</p>
+            <input readonly class="form-control-plaintext" type="text" value="${tarea}" id="inputEditarTarea${indiceTarea}" autocomplete="off"></input>
             <div class="d-flex justify-content-between align-items-center">
               <div class="btn-group">
                 <button type="button" class="btn btn-danger" onclick="borrarTarea(${indiceTarea})"><i class="bi bi-trash"></i></button>
-                <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#modalEditarTarea" 
+                <button type="button" class="btn btn-warning" id="btnEditarTarea${indiceTarea}"
                 onclick="editarTarea(${indiceTarea})"><i class="bi bi-pencil-square"></i></button>
               </div>
             </div>
@@ -58,7 +58,8 @@ function mostrarTareas() {
         </div>
       </article>
   `)
-  );
+    );
+  }
 }
 
 function borrarTarea(indiceTarea) {
@@ -67,20 +68,21 @@ function borrarTarea(indiceTarea) {
 }
 
 function editarTarea(indiceTarea) {
-  inputEditarTarea.value = listaDeTareas[indiceTarea];
-  let btnGuardarTarea = document.getElementById("btnGuardarTarea");
-  btnGuardarTarea.addEventListener("click", () => {
+  let btnEditarTarea = document.getElementById(`btnEditarTarea${indiceTarea}`);
+  let inputEditarTarea = document.getElementById(
+    `inputEditarTarea${indiceTarea}`
+  );
+  inputEditarTarea.removeAttribute("readonly");
+  inputEditarTarea.focus();
+  btnEditarTarea.innerHTML = "Guardar tarea";
+  btnEditarTarea.addEventListener("click", () => {
     let tareaEditada = inputEditarTarea.value;
-    tareaEditada = tareaEditada.trim();
-    if (tareaEditada !== "" && !listaDeTareas.includes(tareaEditada)) {
+    if (tareaEditada !== "") {
+      btnEditarTarea.setAttribute("readonly", "readonly");
+      btnEditarTarea.innerHTML = `<i class="bi bi-pencil-square"></i>`;
       listaDeTareas[indiceTarea] = tareaEditada;
+      inputEditarTarea.blur();
       mostrarTareas();
-    } else if (listaDeTareas.includes(tareaEditada)) {
-      Swal.fire({
-        icon: "error",
-        title: "Oops...Lo siento",
-        text: "La tarea que deseas agregar ya existe.",
-      });
     } else {
       Swal.fire({
         icon: "error",
