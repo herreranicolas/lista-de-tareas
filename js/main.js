@@ -73,6 +73,8 @@ function editarTarea(indiceTarea) {
     `inputEditarTarea${indiceTarea}`
   );
   inputEditarTarea.removeAttribute("readonly");
+  let end = inputEditarTarea.value.length
+  inputEditarTarea.setSelectionRange(end,end)
   inputEditarTarea.focus();
   btnEditarTarea.innerHTML = "Guardar tarea";
   btnEditarTarea.addEventListener("click", () => {
