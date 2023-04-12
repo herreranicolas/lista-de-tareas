@@ -11,6 +11,3 @@ body {
   border: none;
 }
 
-.btn:disabled {
-  display: none;
-}

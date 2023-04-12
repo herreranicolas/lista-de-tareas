@@ -111,31 +111,41 @@ function editarTarea(indiceTarea) {
   let btnCompletarTarea = document.getElementById(
     `btnCompletarTarea${indiceTarea}`
   );
-  let btnBorrarTarea = document.getElementById(
-    `btnBorrarTarea${indiceTarea}`
-  );
+  let btnBorrarTarea = document.getElementById(`btnBorrarTarea${indiceTarea}`);
+  let grupoDeBotones = document.querySelectorAll(".btn");
   inputEditarTarea.removeAttribute("readonly");
   let end = inputEditarTarea.value.length;
   inputEditarTarea.setSelectionRange(end, end);
   inputEditarTarea.focus();
   btnEditarTarea.innerHTML = "Editar tarea";
-btnCompletarTarea.disabled = true
-btnBorrarTarea.disabled = true
+  btnCompletarTarea.disabled = true;
+  btnBorrarTarea.disabled = true;
+  btnCompletarTarea.style.display = "none";
+  btnBorrarTarea.style.display = "none";
+  grupoDeBotones.forEach((button) => {
+    if (button.id !== `btnEditarTarea${indiceTarea}`) {
+      button.disabled = true;
+    }
+  });
   inputEditarTarea.addEventListener("keypress", (e) => {
     if (e.key === "Enter") {
       e.preventDefault();
       btnEditarTarea.click();
     }
   });
+
   btnEditarTarea.addEventListener("click", () => {
     let tareaEditada = inputEditarTarea.value;
     if (tareaEditada !== "") {
       btnCompletarTarea.disabled = false;
       btnBorrarTarea.disabled = false;
+      btnCompletarTarea.style.display = "initial";
+      btnBorrarTarea.style.display = "initial";
       btnEditarTarea.setAttribute("readonly", "readonly");
       btnEditarTarea.innerHTML = `<i class="bi bi-pencil-square"></i>`;
       listaDeTareas[indiceTarea] = tareaEditada;
       inputEditarTarea.blur();
+      btnAgregarTarea.disabled = false;
       mostrarTareas();
     } else {
       Swal.fire({
@@ -164,6 +174,7 @@ function completarTarea(indiceTarea) {
     btnCompletarTarea.innerHTML = "";
     btnCompletarTarea.innerHTML = `<i class="bi bi-x-circle-fill"></i>`;
     btnEditarTarea.disabled = true;
+    btnEditarTarea.style.display = "none";
     Swal.fire({
       icon: "success",
       iconColor: "#6e786c",
@@ -177,6 +188,7 @@ function completarTarea(indiceTarea) {
   } else {
     inputEditarTarea.classList.remove("text-decoration-line-through");
     btnEditarTarea.disabled = false;
+    btnEditarTarea.style.display = "initial";
     btnCompletarTarea.innerHTML = `<i class="bi bi-check-circle"></i>`;
   }
 }
