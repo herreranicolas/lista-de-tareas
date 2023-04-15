@@ -20,6 +20,6 @@ textarea {
 }
 
 .form-control-plaintext {
-  padding: 0px;
+  padding: 0px 0.25rem;
   border: none;
 }

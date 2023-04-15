@@ -3,6 +3,15 @@ let inputTarea = document.getElementById("inputTarea");
 let btnAgregarTarea = document.getElementById("btnAgregarTarea");
 let contenedorTareas = document.getElementById("contenedorTareas");
 let listaDeTareas = [];
+let listadoDeTareas = [];
+
+class Tarea {
+  constructor(textoTarea, tareaCompleta = false) {
+    this.textoTarea = textoTarea;
+    this.tareaCompleta = tareaCompleta;
+    this.idTarea = listadoDeTareas.length;
+  }
+}
 
 form.addEventListener("submit", (e) => {
   e.preventDefault();
@@ -10,11 +19,10 @@ form.addEventListener("submit", (e) => {
 });
 
 function agregarTarea() {
-  let tarea = inputTarea.value;
-  tarea = tarea.trim();
-  if (tarea !== "" && !listaDeTareas.includes(tarea)) {
-    listaDeTareas.push(tarea);
-  } else if (listaDeTareas.includes(tarea)) {
+  let nuevaTarea = new Tarea(inputTarea.value.trim());
+  if (nuevaTarea.textoTarea !== "" && !listadoDeTareas.includes(nuevaTarea)) {
+    listadoDeTareas.push(nuevaTarea);
+  } else if (listadoDeTareas.includes(nuevaTarea)) {
     Swal.fire({
       icon: "error",
       iconColor: "#6e786c",
@@ -40,46 +48,55 @@ function agregarTarea() {
 }
 
 function mostrarTareas() {
-  if (listaDeTareas.length === 0) {
+  if (listadoDeTareas.length === 0) {
     contenedorTareas.innerHTML = `<p class="lead text-center m-1">No tienes tareas pendientes</p>`;
     contenedorTareas.classList.add("justify-content-center");
   } else {
     contenedorTareas.innerHTML = "";
     contenedorTareas.classList.remove("justify-content-center");
-    listaDeTareas.forEach(
-      (tarea, indiceTarea) =>{
-        contenedorTareas.innerHTML += `
+    listadoDeTareas.map((tarea) => {
+      contenedorTareas.innerHTML += `
       <article class="col">
         <div class="card shadow-sm">
           <div class="card-body">
-          <textarea
-                readonly
-                class="form-control-plaintext"
-                type="text"
-                id="inputEditarTarea${indiceTarea}"
-                autocomplete="off"
-              >${tarea}</textarea>
+              ${
+                tarea.tareaCompleta
+                  ? `<textarea readonly class="form-control-plaintext text-decoration-line-through" type="text" id="inputEditarTarea${tarea.idTarea}" autocomplete="off">${tarea.textoTarea}</textarea>`
+                  : `<textarea readonly class="form-control-plaintext" type="text" id="inputEditarTarea${tarea.idTarea}" autocomplete="off">${tarea.textoTarea}</textarea>`
+              }
             <div class="d-flex justify-content-between align-items-center">
               <div class="btn-group">
                 <button type="button" class="btn"
-                id="btnCompletarTarea${indiceTarea}"
-                onclick="completarTarea(${indiceTarea})"><i class="bi bi-check-circle"></i></button>
-                <button type="button" class="btn" id="btnEditarTarea${indiceTarea}"
-                onclick="editarTarea(${indiceTarea})"><i class="bi bi-pencil-square"></i></button>
+                id="btnCompletarTarea${tarea.idTarea}"
+                onclick="completarTarea(${tarea.idTarea})">${
+        tarea.tareaCompleta
+          ? `<i class="bi bi-x-circle-fill"></i></button>`
+          : `<i class="bi bi-check-circle"></i></button> <button type="button" class="btn" id="btnEditarTarea${tarea.idTarea}"
+                          onclick="editarTarea(${tarea.idTarea})"><i class="bi bi-pencil-square"></i></button>`
+      }
                 <button type="button" class="btn"
-                id="btnBorrarTarea${indiceTarea}" onclick="borrarTarea(${indiceTarea})"><i class="bi bi-trash"></i></button>
+                id="btnBorrarTarea${tarea.idTarea}" onclick="borrarTarea(${
+        tarea.idTarea
+      })"><i class="bi bi-trash"></i></button>
               </div>
             </div>
           </div>
         </div>
       </article>
-  `;
+      `;
+     let inputEditarTarea = document.getElementById(
+       `inputEditarTarea${tarea.idTarea}`
+     );
+     console.log(inputEditarTarea);
+      console.log(inputEditarTarea.innerHTML.length);
+      if (inputEditarTarea.innerHTML.length < 25) {
+        inputEditarTarea.style.height = "1.75rem"
       }
-    );
+    });
   }
 }
 
-function borrarTarea(indiceTarea) {
+function borrarTarea(idTarea) {
   Swal.fire({
     title: "¿Estas seguro?",
     text: "¡No podrás revertir este cambio!",
@@ -91,8 +108,8 @@ function borrarTarea(indiceTarea) {
     confirmButtonText: "Si, estoy seguro!",
   }).then((result) => {
     if (result.isConfirmed) {
-      listaDeTareas = listaDeTareas.filter(
-        (tarea, index) => index !== indiceTarea
+      listadoDeTareas = listadoDeTareas.filter(
+        (tarea, index) => index !== idTarea
       );
       mostrarTareas();
       Swal.fire({
@@ -109,15 +126,13 @@ function borrarTarea(indiceTarea) {
   });
 }
 
-function editarTarea(indiceTarea) {
-  let btnEditarTarea = document.getElementById(`btnEditarTarea${indiceTarea}`);
-  let inputEditarTarea = document.getElementById(
-    `inputEditarTarea${indiceTarea}`
-  );
+function editarTarea(idTarea) {
+  let btnEditarTarea = document.getElementById(`btnEditarTarea${idTarea}`);
+  let inputEditarTarea = document.getElementById(`inputEditarTarea${idTarea}`);
   let btnCompletarTarea = document.getElementById(
-    `btnCompletarTarea${indiceTarea}`
+    `btnCompletarTarea${idTarea}`
   );
-  let btnBorrarTarea = document.getElementById(`btnBorrarTarea${indiceTarea}`);
+  let btnBorrarTarea = document.getElementById(`btnBorrarTarea${idTarea}`);
   let grupoDeBotones = document.querySelectorAll(".btn");
   inputEditarTarea.removeAttribute("readonly");
   let end = inputEditarTarea.value.length;
@@ -129,7 +144,7 @@ function editarTarea(indiceTarea) {
   btnCompletarTarea.style.display = "none";
   btnBorrarTarea.style.display = "none";
   grupoDeBotones.forEach((button) => {
-    if (button.id !== `btnEditarTarea${indiceTarea}`) {
+    if (button.id !== `btnEditarTarea${idTarea}`) {
       button.disabled = true;
     }
   });
@@ -142,7 +157,7 @@ function editarTarea(indiceTarea) {
 
   btnEditarTarea.addEventListener("click", () => {
     let tareaEditada = inputEditarTarea.value;
-    tareaEditada = tareaEditada.trim()
+    tareaEditada = tareaEditada.trim();
     if (tareaEditada !== "") {
       btnCompletarTarea.disabled = false;
       btnBorrarTarea.disabled = false;
@@ -150,7 +165,7 @@ function editarTarea(indiceTarea) {
       btnBorrarTarea.style.display = "initial";
       btnEditarTarea.setAttribute("readonly", "readonly");
       btnEditarTarea.innerHTML = `<i class="bi bi-pencil-square"></i>`;
-      listaDeTareas[indiceTarea] = tareaEditada;
+      listadoDeTareas[idTarea].textoTarea = tareaEditada;
       inputEditarTarea.blur();
       btnAgregarTarea.disabled = false;
       mostrarTareas();
@@ -168,20 +183,20 @@ function editarTarea(indiceTarea) {
   });
 }
 
-function completarTarea(indiceTarea) {
-  let btnEditarTarea = document.getElementById(`btnEditarTarea${indiceTarea}`);
+function completarTarea(idTarea) {
+  let btnEditarTarea = document.getElementById(`btnEditarTarea${idTarea}`);
   let btnCompletarTarea = document.getElementById(
-    `btnCompletarTarea${indiceTarea}`
+    `btnCompletarTarea${idTarea}`
   );
-  let inputEditarTarea = document.getElementById(
-    `inputEditarTarea${indiceTarea}`
-  );
+  let inputEditarTarea = document.getElementById(`inputEditarTarea${idTarea}`);
   if (btnCompletarTarea.innerHTML !== `<i class="bi bi-x-circle-fill"></i>`) {
     inputEditarTarea.classList.add("text-decoration-line-through");
     btnCompletarTarea.innerHTML = "";
     btnCompletarTarea.innerHTML = `<i class="bi bi-x-circle-fill"></i>`;
     btnEditarTarea.disabled = true;
     btnEditarTarea.style.display = "none";
+    listadoDeTareas[idTarea].tareaCompleta = true;
+    console.log(listadoDeTareas);
     Swal.fire({
       icon: "success",
       iconColor: "#6e786c",
@@ -194,8 +209,8 @@ function completarTarea(indiceTarea) {
     });
   } else {
     inputEditarTarea.classList.remove("text-decoration-line-through");
-    btnEditarTarea.disabled = false;
-    btnEditarTarea.style.display = "initial";
+    listadoDeTareas[idTarea].tareaCompleta = false;
     btnCompletarTarea.innerHTML = `<i class="bi bi-check-circle"></i>`;
   }
+  mostrarTareas()
 }
