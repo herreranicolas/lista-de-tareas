@@ -142,6 +142,7 @@ function editarTarea(indiceTarea) {
 
   btnEditarTarea.addEventListener("click", () => {
     let tareaEditada = inputEditarTarea.value;
+    tareaEditada = tareaEditada.trim()
     if (tareaEditada !== "") {
       btnCompletarTarea.disabled = false;
       btnBorrarTarea.disabled = false;
