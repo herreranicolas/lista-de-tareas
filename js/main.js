@@ -194,7 +194,6 @@ function completarTarea(idTarea) {
     btnEditarTarea.disabled = true;
     btnEditarTarea.style.display = "none";
     listadoDeTareas[idTarea].tareaCompleta = true;
-    console.log(listadoDeTareas);
     Swal.fire({
       icon: "success",
       iconColor: "#6e786c",
