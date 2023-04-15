@@ -2,7 +2,7 @@ class Tarea {
   constructor(textoTarea, tareaCompleta = false) {
     this.textoTarea = textoTarea;
     this.tareaCompleta = tareaCompleta;
-    this.idTarea = listadoDeTareas.length;
+    this.idTarea;
   }
 }
 
@@ -54,30 +54,38 @@ function mostrarTareas() {
   } else {
     contenedorTareas.innerHTML = "";
     contenedorTareas.classList.remove("justify-content-center");
-    listadoDeTareas.map((tarea) => {
+    listadoDeTareas.map((tarea, idTarea) => {
       contenedorTareas.innerHTML += `
       <article class="col">
         <div class="card shadow-sm">
           <div class="card-body">
               ${
                 tarea.tareaCompleta
-                  ? `<textarea readonly class="form-control-plaintext text-decoration-line-through" type="text" id="inputEditarTarea${tarea.idTarea}" autocomplete="off">${tarea.textoTarea}</textarea>`
-                  : `<textarea readonly class="form-control-plaintext" type="text" id="inputEditarTarea${tarea.idTarea}" autocomplete="off" maxlength="50">${tarea.textoTarea}</textarea>`
+                  ? `<textarea readonly class="form-control-plaintext text-decoration-line-through" type="text" id="inputEditarTarea${(tarea.idTarea =
+                      idTarea)}" autocomplete="off">${
+                      tarea.textoTarea
+                    }</textarea>`
+                  : `<textarea readonly class="form-control-plaintext" type="text" id="inputEditarTarea${(tarea.idTarea =
+                      idTarea)}" autocomplete="off" maxlength="50">${
+                      tarea.textoTarea
+                    }</textarea>`
               }
             <div class="d-flex justify-content-between align-items-center">
               <div class="btn-group">
                 <button type="button" class="btn"
-                id="btnCompletarTarea${tarea.idTarea}"
-                onclick="completarTarea(${tarea.idTarea})">${
+                id="btnCompletarTarea${(tarea.idTarea = idTarea)}"
+                onclick="completarTarea(${(tarea.idTarea = idTarea)})">${
         tarea.tareaCompleta
           ? `<i class="bi bi-x-circle-fill"></i></button>`
-          : `<i class="bi bi-check-circle"></i></button> <button type="button" class="btn" id="btnEditarTarea${tarea.idTarea}"
-                          onclick="editarTarea(${tarea.idTarea})"><i class="bi bi-pencil-square"></i></button>`
+          : `<i class="bi bi-check-circle"></i></button> <button type="button" class="btn" id="btnEditarTarea${(tarea.idTarea =
+              idTarea)}"
+                          onclick="editarTarea(${(tarea.idTarea =
+                            idTarea)})"><i class="bi bi-pencil-square"></i></button>`
       }
                 <button type="button" class="btn"
-                id="btnBorrarTarea${tarea.idTarea}" onclick="borrarTarea(${
-        tarea.idTarea
-      })"><i class="bi bi-trash"></i></button>
+                id="btnBorrarTarea${(tarea.idTarea =
+                  idTarea)}" onclick="borrarTarea(${(tarea.idTarea =
+        idTarea)})"><i class="bi bi-trash"></i></button>
               </div>
             </div>
           </div>
@@ -85,7 +93,7 @@ function mostrarTareas() {
       </article>
       `;
       let inputEditarTarea = document.getElementById(
-        `inputEditarTarea${tarea.idTarea}`
+        `inputEditarTarea${(tarea.idTarea = idTarea)}`
       );
       if (inputEditarTarea.innerHTML.length < 25) {
         inputEditarTarea.style.height = "1.75rem";
