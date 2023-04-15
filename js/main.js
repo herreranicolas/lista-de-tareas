@@ -1,10 +1,3 @@
-let form = document.getElementById("formTarea");
-let inputTarea = document.getElementById("inputTarea");
-let btnAgregarTarea = document.getElementById("btnAgregarTarea");
-let contenedorTareas = document.getElementById("contenedorTareas");
-let listaDeTareas = [];
-let listadoDeTareas = [];
-
 class Tarea {
   constructor(textoTarea, tareaCompleta = false) {
     this.textoTarea = textoTarea;
@@ -12,6 +5,13 @@ class Tarea {
     this.idTarea = listadoDeTareas.length;
   }
 }
+
+let form = document.getElementById("formTarea");
+let inputTarea = document.getElementById("inputTarea");
+let btnAgregarTarea = document.getElementById("btnAgregarTarea");
+let contenedorTareas = document.getElementById("contenedorTareas");
+let listaDeTareas = [];
+let listadoDeTareas = [];
 
 form.addEventListener("submit", (e) => {
   e.preventDefault();
@@ -62,7 +62,7 @@ function mostrarTareas() {
               ${
                 tarea.tareaCompleta
                   ? `<textarea readonly class="form-control-plaintext text-decoration-line-through" type="text" id="inputEditarTarea${tarea.idTarea}" autocomplete="off">${tarea.textoTarea}</textarea>`
-                  : `<textarea readonly class="form-control-plaintext" type="text" id="inputEditarTarea${tarea.idTarea}" autocomplete="off">${tarea.textoTarea}</textarea>`
+                  : `<textarea readonly class="form-control-plaintext" type="text" id="inputEditarTarea${tarea.idTarea}" autocomplete="off" maxlength="50">${tarea.textoTarea}</textarea>`
               }
             <div class="d-flex justify-content-between align-items-center">
               <div class="btn-group">
@@ -84,11 +84,11 @@ function mostrarTareas() {
         </div>
       </article>
       `;
-     let inputEditarTarea = document.getElementById(
-       `inputEditarTarea${tarea.idTarea}`
-     );
+      let inputEditarTarea = document.getElementById(
+        `inputEditarTarea${tarea.idTarea}`
+      );
       if (inputEditarTarea.innerHTML.length < 25) {
-        inputEditarTarea.style.height = "1.75rem"
+        inputEditarTarea.style.height = "1.75rem";
       }
     });
   }
@@ -210,5 +210,5 @@ function completarTarea(idTarea) {
     listadoDeTareas[idTarea].tareaCompleta = false;
     btnCompletarTarea.innerHTML = `<i class="bi bi-check-circle"></i>`;
   }
-  mostrarTareas()
+  mostrarTareas();
 }

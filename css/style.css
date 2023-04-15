@@ -17,6 +17,7 @@ body {
 
 textarea {
   resize: none;
+  word-break: break-word;
 }
 
 .form-control-plaintext {
