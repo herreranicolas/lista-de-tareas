@@ -87,8 +87,6 @@ function mostrarTareas() {
      let inputEditarTarea = document.getElementById(
        `inputEditarTarea${tarea.idTarea}`
      );
-     console.log(inputEditarTarea);
-      console.log(inputEditarTarea.innerHTML.length);
       if (inputEditarTarea.innerHTML.length < 25) {
         inputEditarTarea.style.height = "1.75rem"
       }
