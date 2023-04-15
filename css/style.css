@@ -5,9 +5,22 @@ body {
   background-color: #cbf1c4;
 }
 
-.card, .btn, .btn:hover, .form-control, .form-control:focus {
+.card,
+.btn,
+.btn:hover,
+.form-control,
+.form-control:focus {
   background-color: #e4f9e0;
   color: #6e786c;
   border: none;
 }
 
+textarea {
+  resize: none;
+  height: 1.5rem;
+}
+
+.form-control-plaintext {
+  padding: 0px;
+  border: none;
+}

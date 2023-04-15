@@ -6,9 +6,8 @@ let listaDeTareas = [];
 
 form.addEventListener("submit", (e) => {
   e.preventDefault();
+  agregarTarea();
 });
-
-btnAgregarTarea.addEventListener("click", agregarTarea);
 
 function agregarTarea() {
   let tarea = inputTarea.value;
@@ -48,12 +47,18 @@ function mostrarTareas() {
     contenedorTareas.innerHTML = "";
     contenedorTareas.classList.remove("justify-content-center");
     listaDeTareas.forEach(
-      (tarea, indiceTarea) =>
-        (contenedorTareas.innerHTML += `
+      (tarea, indiceTarea) =>{
+        contenedorTareas.innerHTML += `
       <article class="col">
         <div class="card shadow-sm">
           <div class="card-body">
-            <input readonly class="form-control-plaintext" type="text" value="${tarea}" id="inputEditarTarea${indiceTarea}" autocomplete="off"></input>
+          <textarea
+                readonly
+                class="form-control-plaintext"
+                type="text"
+                id="inputEditarTarea${indiceTarea}"
+                autocomplete="off"
+              >${tarea}</textarea>
             <div class="d-flex justify-content-between align-items-center">
               <div class="btn-group">
                 <button type="button" class="btn"
@@ -68,7 +73,8 @@ function mostrarTareas() {
           </div>
         </div>
       </article>
-  `)
+  `;
+      }
     );
   }
 }
