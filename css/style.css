@@ -3,6 +3,9 @@
 body {
   font-family: "Poppins", sans-serif;
   background-color: #cbf1c4;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
 .card,
