@@ -10,8 +10,7 @@ let form = document.getElementById("formTarea");
 let inputTarea = document.getElementById("inputTarea");
 let btnAgregarTarea = document.getElementById("btnAgregarTarea");
 let contenedorTareas = document.getElementById("contenedorTareas");
-let listaDeTareas = [];
-let listadoDeTareas = [];
+let listadoDeTareas = JSON.parse(localStorage.getItem("tareas")) || [];
 
 form.addEventListener("submit", (e) => {
   e.preventDefault();
@@ -22,6 +21,8 @@ function agregarTarea() {
   let nuevaTarea = new Tarea(inputTarea.value.trim());
   if (nuevaTarea.textoTarea !== "" && !listadoDeTareas.includes(nuevaTarea)) {
     listadoDeTareas.push(nuevaTarea);
+    // guardar en local storage
+    localStorage.setItem("tareas", JSON.stringify(listadoDeTareas));
   } else if (listadoDeTareas.includes(nuevaTarea)) {
     Swal.fire({
       icon: "error",
@@ -117,6 +118,7 @@ function borrarTarea(idTarea) {
       listadoDeTareas = listadoDeTareas.filter(
         (tarea, index) => index !== idTarea
       );
+      localStorage.setItem("tareas", JSON.stringify(listadoDeTareas));
       mostrarTareas();
       Swal.fire({
         icon: "success",
@@ -172,6 +174,7 @@ function editarTarea(idTarea) {
       btnEditarTarea.setAttribute("readonly", "readonly");
       btnEditarTarea.innerHTML = `<i class="bi bi-pencil-square"></i>`;
       listadoDeTareas[idTarea].textoTarea = tareaEditada;
+      localStorage.setItem("tareas", JSON.stringify(listadoDeTareas))
       inputEditarTarea.blur();
       btnAgregarTarea.disabled = false;
       mostrarTareas();
@@ -202,6 +205,7 @@ function completarTarea(idTarea) {
     btnEditarTarea.disabled = true;
     btnEditarTarea.style.display = "none";
     listadoDeTareas[idTarea].tareaCompleta = true;
+    localStorage.setItem("tareas", JSON.stringify(listadoDeTareas));
     Swal.fire({
       icon: "success",
       iconColor: "#6e786c",
@@ -215,7 +219,10 @@ function completarTarea(idTarea) {
   } else {
     inputEditarTarea.classList.remove("text-decoration-line-through");
     listadoDeTareas[idTarea].tareaCompleta = false;
+    localStorage.setItem("tareas", JSON.stringify(listadoDeTareas));
     btnCompletarTarea.innerHTML = `<i class="bi bi-check-circle"></i>`;
   }
   mostrarTareas();
 }
+
+mostrarTareas()
